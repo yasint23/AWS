@@ -1,7 +1,18 @@
 Create YAML Template for start EC2 Instance:
 
-1-Open the Visual Studio Code and create "name.yaml" file.
-2-Type "cfn" for Cloud Formation template. 
-3- Type description: "This template launches an EC2 with a security group 
+1- Open the Visual Studio Code and create "name.yaml" file.
+2- Type "cfn" for Cloud Formation template.
+3- Create linux.yaml template 
+   * Type description: "This template launches an EC2 with a security group 
 that enables SSH connection".
-4- 
+   * Resources: All is default only
+     ImageID: 
+     Keyname:
+     SecurityGroups:
+     Tags:
+       - Key: Name
+         Value: MyLinuxEc2
+4-Open the Cloud Formation page on Amazon Console
+  * Create Stack
+  * Upload linux.yaml template
+5- Go to EC2 service amazon webservice console, find the LinuxEC2 instance ready.
