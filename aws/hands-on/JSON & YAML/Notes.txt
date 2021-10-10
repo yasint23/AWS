@@ -1,0 +1,7 @@
+Create YAML Template for start EC2 Instance:
+
+1-Open the Visual Studio Code and create "name.yaml" file.
+2-Type "cfn" for Cloud Formation template. 
+3- Type description: "This template launches an EC2 with a security group 
+that enables SSH connection".
+4- 
