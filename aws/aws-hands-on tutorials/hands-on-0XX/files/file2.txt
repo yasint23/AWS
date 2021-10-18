@@ -1,0 +1,2 @@
+This is test file 2 for hands-on-016.
+It should be copied under the confidential folder.
