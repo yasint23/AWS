@@ -1,0 +1,17 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: |
+  "This template launches an EC2 with a security group 
+that enables SSH connection".
+ 
+Resources:
+LogicalID:
+  Type: AWS::EC2::Instance
+  Properties:
+    ImageId: 
+    InstanceType: t2.micro
+    KeyName: firstkey
+    SecurityGroups:
+      -FirstSecurityGroups
+    Tags:
+      - Key: Name
+      - Value: my-linux
