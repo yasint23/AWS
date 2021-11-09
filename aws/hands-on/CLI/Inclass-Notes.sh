@@ -72,7 +72,7 @@ aws ec2 run-instances \
    --image-id ami-083654bd07b5da81d \
    --count 1 \
    --instance-type t2.micro \
-   --key-name keynamehere
+   --key-name firstkey
 
 aws ec2 stop-instances --instance-ids instanceidhere 
 
