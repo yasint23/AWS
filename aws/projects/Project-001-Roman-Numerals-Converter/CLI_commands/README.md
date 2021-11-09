@@ -14,6 +14,7 @@ aws --version
 - Write your credentials using this command
 ```bash
 aws configure
+aws sts get-caller-identity --query Account --output text #to check the ec2 for configured or not
 ```
 
 1. Create Security Group
@@ -65,18 +66,13 @@ LATEST_AMI=$(aws ssm get-parameters --names /aws/service/ami-amazon-linux-latest
 
 - Now we can run the instance with CLI command. (Do not forget to create userdata.sh under "/home/ec2-user/" folder before run this command)
 
-```bash
-aws ec2 run-instances --image-id $LATEST_AMI --count 1 --instance-type t2.micro --key-name serdar --security-groups roman_numbers_sec_grp --tag-specifications 'ResourceType=instance,Tags=[{Key=Name,Value=roman_numbers}]' --user-data file:///Users/ODG/Desktop/git_dir/serdar-cw/porfolio_lesson_plan/week_6/CLI_solution/userdata.sh
-
-or
-
 aws ec2 run-instances \
-    --image-id $LATEST_AMI \
+    --image-id ami-01cc34ab2709337aa \
     --count 1 \
     --instance-type t2.micro \
-    --key-name serdar \
+    --key-name firstkey \
     --security-groups roman_numbers_sec_grp \
-    --tag-specifications 'ResourceType=instance,Tags=[{Key=Name,Value=roman_numbers}]'
+    --tag-specifications 'ResourceType=instance,Tags=[{Key=Name,Value=roman_numbers}]' \
     --user-data file:///home/ec2-user/userdata.sh
 ```
 
