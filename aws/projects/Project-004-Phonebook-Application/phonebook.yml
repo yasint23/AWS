@@ -1,0 +1,99 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: |
+  The Phonebook Application aims to create a phonebook application in Python and deployed as a web application with 
+  Flask on AWS Application Load Balancer with Auto Scaling Group of Elastic Compute Cloud (EC2) Instances and Relational
+  Database Service (RDS) using AWS Cloudformation Service.
+  
+Parameters:
+  KeyName:
+    Description: Enter the name of your Key Pair for SSH connections
+    Type: AWS::EC2::KeyPair::KeyName
+    ConstraintDescription: Must be the name of an existing EC2 KeyPair. 
+
+Resources:
+WebServerSecurityGroup:
+  Type: AWS::EC2::SecurityGroup
+  Properties:
+    GroupDescription: Enable HTTP for Flask Web Server and SSH port to secure reach to my EC2
+    SecurityGroupIngress:
+      - IpProtocol: tcp
+        FromPort: 80
+        ToPort: 80
+        CidrIp: 0.0.0.0/0
+      - IpProtocol: tcp
+        FromPort: 22
+        ToPort: 22
+        CidrIp: 0.0.0.0/0      
+
+WebServerHost:
+  Type: AWS::EC2::Instance
+  Properties:
+    ImageId: ami-01cc34ab2709337aa
+    InstanceType: t2.micro
+    KeyName: !Ref KeyName
+    SecurityGroupIds:
+      - !Ref WebServerSecurityGroup
+    Tags:
+      - Key: Name
+        Value: !Sub Web Server of ${AWS::StackName} Stack
+    UserData: !Base64 |
+      #!/bin/bash
+      yum update -y
+      yum install python3 -y
+      pip3 install flask
+      cd /home/ec2-user
+      wget https://raw.githubusercontent.com/yasint23/AWS-DevOps/main/aws/projects/Project-004-Phonebook-Application/phonebook-app.py
+      mkdir templates
+      cd templates
+      wget https://raw.githubusercontent.com/yasint23/AWS-DevOps/main/aws/projects/Project-004-Phonebook-Application/templates/index.html
+      wget https://raw.githubusercontent.com/yasint23/AWS-DevOps/main/aws/projects/Project-004-Phonebook-Application/templates/add-update.html
+      wget https://raw.githubusercontent.com/yasint23/AWS-DevOps/main/aws/projects/Project-004-Phonebook-Application/templates/delete.html
+      cd ..
+      python3 phonebook-app.py
+
+TargetGroup:
+  Type: AWS::ElasticLoadBalancingV2::TargetGroup
+  Properties:
+    HealthCheckIntervalSeconds: 10
+    HealthCheckTimeoutSeconds: 5
+    HealthyThresholdCount: 5
+    Port: 80
+    UnhealthyThresholdCount: 3
+
+ElasticLoadBalancing:
+  Type: AWS::ElasticLoadBalancingV2::LoadBalancer
+  Properties:
+    SecurityGroups:
+      - !GetAtt WebServerSecurityGroup.GroupId
+    Type: Application 
+
+AutoScaling:
+  Type: AWS::AutoScaling::AutoScalingGroup
+  Properties:
+    DesiredCapacity: 2
+    HealthCheckGracePeriod: 90
+    HealthCheckType: ELB
+    LaunchTemplate:
+      LaunchTemplateId: !Ref WebServerHost
+      Version: "1"
+    MaxSize: "3"
+    MinSize: "1" 
+    TargetGroupARNs:
+      !Ref TargetGroup
+
+Listener:
+  Type: AWS::ElasticLoadBalancingV2::Listener
+  Properties:
+    DefaultActions: # Required
+      - Type: forward
+        TargetGroupArn: !Ref TargetGroup 
+    LoadBalancerArn: !Ref ElasticLoadBalancing # Required
+    Port: 80
+    Protocol: HTTP
+
+Outputs:
+  WebsiteURL:
+    Value: !Sub
+      - http://${PublicAddress}
+      - PublicAddress: !GetAtt WebServerHost.PublicDnsName
+    Description: PhoneBook Application URL
