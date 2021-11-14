@@ -38,26 +38,29 @@ Resources:
         KeyName: !Ref MyKeyName
         SecurityGroupIds:
           - !GetAtt MySG.GroupId
-        UserData: !Base64 | 
-          #!/bin/bash
-          yum update -y
-          yum install python3 -y
-          pip3 install flask
-          pip3 install flask-mysql
-          pip3 install sqlalchemy
-          pip3 install Flask-SQLAlchemy
-          cd /home/ec2-user
-          echo "${RDSend}" > dbserver.endpoint
-          chmod 777 dbserver.endpoint
-          wget https://raw.githubusercontent.com/yasint23/AWS-DevOps/main/aws/projects/Project-004-Phonebook-Application/phonebook-app.py
-          mkdir templates
-          cd templates
-          wget https://raw.githubusercontent.com/yasint23/AWS-DevOps/main/aws/projects/Project-004-Phonebook-Application/templates/index.html
-          wget https://raw.githubusercontent.com/yasint23/AWS-DevOps/main/aws/projects/Project-004-Phonebook-Application/templates/add-update.html
-          wget https://raw.githubusercontent.com/yasint23/AWS-DevOps/main/aws/projects/Project-004-Phonebook-Application/templates/delete.html
-          cd ..
-          python3 phonebook-app.py
-        - RDSend: !GetAtt MyDB.Endpoint.Address
+        UserData:
+          Fn::Base64:
+            Fn::Sub:
+              - | 
+                #!/bin/bash
+                yum update -y
+                yum install python3 -y
+                pip3 install flask
+                pip3 install flask-mysql
+                pip3 install sqlalchemy
+                pip3 install Flask-SQLAlchemy
+                cd /home/ec2-user
+                echo "${RDSend}" > dbserver.endpoint
+                chmod 777 dbserver.endpoint
+                wget https://raw.githubusercontent.com/yasint23/AWS-DevOps/main/aws/projects/Project-004-Phonebook-Application/phonebook-app.py
+                mkdir templates
+                cd templates
+                wget https://raw.githubusercontent.com/yasint23/AWS-DevOps/main/aws/projects/Project-004-Phonebook-Application/templates/index.html
+                wget https://raw.githubusercontent.com/yasint23/AWS-DevOps/main/aws/projects/Project-004-Phonebook-Application/templates/add-update.html
+                wget https://raw.githubusercontent.com/yasint23/AWS-DevOps/main/aws/projects/Project-004-Phonebook-Application/templates/delete.html
+                cd ..
+                python3 phonebook-app.py
+              - RDSend: !GetAtt MyDB.Endpoint.Address
 
   MyTG:
     Type: AWS::ElasticLoadBalancingV2::TargetGroup
@@ -135,7 +138,7 @@ Resources:
             ToPort: 80
             IpProtocol: tcp
       VpcId: !Ref MyVPC
-      
+
   MySG:
     Type: AWS::EC2::SecurityGroup
     Properties:

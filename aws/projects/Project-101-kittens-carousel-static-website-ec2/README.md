@@ -7,15 +7,15 @@ Kittens Carousel is a static website application deployed with Apache Web Server
 
 ![Project_101](Pro_Project_101.png)
 
-- Your company has recently started a web application project that will serve as an attraction point for pet lovers. As a first step of the project, developers in your team have prepared a preliminary design of kittens carousel application and pushed necessary files for the project to the repository on Github. 
+- my company has recently started a web application project that will serve as an attraction point for pet lovers. As a first step of the project, developers in my team have prepared a preliminary design of kittens carousel application and pushed necessary files for the project to the repository on Github. 
 
-- Your task is to show the how the design of application looks as static web page in the development environment. Thus, you need to deploy the web application using the `index.html` and an images given within the `static-web` folder. Note the followings for your web application.
+- my task is to show the how the design of application looks as static web page in the development environment. Thus, you need to deploy the web application using the `index.html` and an images given within the `static-web` folder. Note the followings for my web application.
    
    - User should face first with `index.html` when web app started.
 
    - Application should be deployed on Apache Web Server.
 
-   - Application should be deployed in the development environment on AWS EC2 Instance using AWS Cloudformation Service. In the development environment, you can configure your Cloudformation template using the followings,
+   - Application should be deployed in the development environment on AWS EC2 Instance using AWS Cloudformation Service. In the development environment, you can configure my Cloudformation template using the followings,
 
       - The application stack should be created with new AWS resources. 
    
@@ -36,13 +36,13 @@ Kittens Carousel is a static website application deployed with Apache Web Server
 ```
 101-kittens-carousel-static-website-ec2 (folder)
 |
-|----readme.md         # Given to the students (Definition of the project)          
-|----cfn-template.yml  # To be delivered by students (Cloudformation template)
+|----readme.md                  
+|----cfn-template.yml  # Cloudformation template
 |----static-web
-        |----index.html  # Given to the students (HTML file)
-        |----cat0.jpg    # Given to the students (image file)
-        |----cat1.jpg    # Given to the students (image file)
-        |----cat2.jpg    # Given to the students (image file)
+        |----index.html  # HTML file
+        |----cat0.jpg    # image file
+        |----cat1.jpg    # image file
+        |----cat2.jpg    # image file
 ```
 
 ## Expected Outcome
@@ -67,35 +67,15 @@ Kittens Carousel is a static website application deployed with Apache Web Server
 
 - Git & Github for Version Control System
 
-### At the end of the project, students will be able to;
-
-- install Apache Web Server on Amazon Linux 2.
-
-- improve bash scripting skills using `user data` section in Cloudformation to install and setup web application on EC2 Instance.
-
-- configure AWS EC2 Instance and Security Groups.
-
-- configure Cloudformation template to use AWS Resources.
-
-- use AWS Cloudformation Service to launch stacks.
-
-- use git commands (push, pull, commit, add etc.) and Github as Version Control System.
-
 ## Steps to Solution
-  
-- Step 1: Download or clone project definition from `clarusway` repo on Github 
 
-- Step 2: Create project folder for local public repo on your pc
+- Step 1: Create project folder for local public repo on pc
 
-- Step 3: Prepare a cloudformation template to deploy your app on EC2 Instance
+- Step 2: Prepare a cloudformation template to deploy app on EC2 Instance
 
-- Step 4: Push your application into your own public repo on Github
+- Step 3: Push application into my own public repo on Github
 
-- Step 5: Deploy your application on AWS Cloud using Cloudformation template to showcase your app within your team.
-
-## Notes
-
-- Customize the application by hard-coding your name instead of `student_name` within `index.html`.
+- Step 4: Deploy application on AWS Cloud using Cloudformation template to showcase my app within my team.
 
 ## Resources
 
