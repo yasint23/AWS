@@ -5,95 +5,161 @@ Description: |
   Database Service (RDS) using AWS Cloudformation Service.
   
 Parameters:
-  KeyName:
+  MyKeyName:
     Description: Enter the name of your Key Pair for SSH connections
     Type: AWS::EC2::KeyPair::KeyName
     ConstraintDescription: Must be the name of an existing EC2 KeyPair. 
 
+  MyVPC:
+    Description: Please select VPC 
+    Type: AWS::EC2::VPC::Id  
+
 Resources:
-WebServerSecurityGroup:
-  Type: AWS::EC2::SecurityGroup
-  Properties:
-    GroupDescription: Enable HTTP for Flask Web Server and SSH port to secure reach to my EC2
-    SecurityGroupIngress:
-      - IpProtocol: tcp
-        FromPort: 80
-        ToPort: 80
-        CidrIp: 0.0.0.0/0
-      - IpProtocol: tcp
-        FromPort: 22
-        ToPort: 22
-        CidrIp: 0.0.0.0/0      
+  MyDB:
+    Type: AWS::RDS::DBInstance
+    Properties:
+      DBName: "phonebook"
+      DeleteAutomatedBackups: true
+      Engine: MySQL
+      EngineVersion: 8.0.19
+      MasterUserPassword: "yasin23"
+      MasterUsername: "admin"
+      MaxAllocatedStorage: '20'
+      DBInstanceClass: db.t2.micro
+      VPCSecurityGroups:
+        - !GetAtt MyDBSG.GroupId
 
-WebServerHost:
-  Type: AWS::EC2::Instance
-  Properties:
-    ImageId: ami-01cc34ab2709337aa
-    InstanceType: t2.micro
-    KeyName: !Ref KeyName
-    SecurityGroupIds:
-      - !Ref WebServerSecurityGroup
-    Tags:
-      - Key: Name
-        Value: !Sub Web Server of ${AWS::StackName} Stack
-    UserData: !Base64 |
-      #!/bin/bash
-      yum update -y
-      yum install python3 -y
-      pip3 install flask
-      cd /home/ec2-user
-      wget https://raw.githubusercontent.com/yasint23/AWS-DevOps/main/aws/projects/Project-004-Phonebook-Application/phonebook-app.py
-      mkdir templates
-      cd templates
-      wget https://raw.githubusercontent.com/yasint23/AWS-DevOps/main/aws/projects/Project-004-Phonebook-Application/templates/index.html
-      wget https://raw.githubusercontent.com/yasint23/AWS-DevOps/main/aws/projects/Project-004-Phonebook-Application/templates/add-update.html
-      wget https://raw.githubusercontent.com/yasint23/AWS-DevOps/main/aws/projects/Project-004-Phonebook-Application/templates/delete.html
-      cd ..
-      python3 phonebook-app.py
+  MyLT:
+    Type: AWS::EC2::LaunchTemplate
+    Properties:
+      LaunchTemplateData:
+        ImageId: ami-01cc34ab2709337aa
+        InstanceType: t2.micro
+        KeyName: !Ref MyKeyName
+        SecurityGroupIds:
+          - !GetAtt MySG.GroupId
+        UserData: !Base64 | 
+          #!/bin/bash
+          yum update -y
+          yum install python3 -y
+          pip3 install flask
+          pip3 install flask-mysql
+          pip3 install sqlalchemy
+          pip3 install Flask-SQLAlchemy
+          cd /home/ec2-user
+          echo "${RDSend}" > dbserver.endpoint
+          chmod 777 dbserver.endpoint
+          wget https://raw.githubusercontent.com/yasint23/AWS-DevOps/main/aws/projects/Project-004-Phonebook-Application/phonebook-app.py
+          mkdir templates
+          cd templates
+          wget https://raw.githubusercontent.com/yasint23/AWS-DevOps/main/aws/projects/Project-004-Phonebook-Application/templates/index.html
+          wget https://raw.githubusercontent.com/yasint23/AWS-DevOps/main/aws/projects/Project-004-Phonebook-Application/templates/add-update.html
+          wget https://raw.githubusercontent.com/yasint23/AWS-DevOps/main/aws/projects/Project-004-Phonebook-Application/templates/delete.html
+          cd ..
+          python3 phonebook-app.py
+        - RDSend: !GetAtt MyDB.Endpoint.Address
 
-TargetGroup:
-  Type: AWS::ElasticLoadBalancingV2::TargetGroup
-  Properties:
-    HealthCheckIntervalSeconds: 10
-    HealthCheckTimeoutSeconds: 5
-    HealthyThresholdCount: 5
-    Port: 80
-    UnhealthyThresholdCount: 3
+  MyTG:
+    Type: AWS::ElasticLoadBalancingV2::TargetGroup
+    Properties:
+      HealthCheckIntervalSeconds: 10
+      HealthCheckTimeoutSeconds: 5
+      HealthyThresholdCount: 5
+      Port: 80
+      UnhealthyThresholdCount: 3
+      VpcId: !Ref MyVPC
 
-ElasticLoadBalancing:
-  Type: AWS::ElasticLoadBalancingV2::LoadBalancer
-  Properties:
-    SecurityGroups:
-      - !GetAtt WebServerSecurityGroup.GroupId
-    Type: Application 
+  MyALB:
+    Type: AWS::ElasticLoadBalancingV2::LoadBalancer
+    Properties:
+      SecurityGroups:
+        - !GetAtt MyALBSG.GroupId
+      Type: Application 
 
-AutoScaling:
-  Type: AWS::AutoScaling::AutoScalingGroup
-  Properties:
-    DesiredCapacity: 2
-    HealthCheckGracePeriod: 90
-    HealthCheckType: ELB
-    LaunchTemplate:
-      LaunchTemplateId: !Ref WebServerHost
-      Version: "1"
-    MaxSize: "3"
-    MinSize: "1" 
-    TargetGroupARNs:
-      !Ref TargetGroup
+  MyASG:
+    Type: AWS::AutoScaling::AutoScalingGroup
+    Properties:
+      DesiredCapacity: 2
+      HealthCheckGracePeriod: 90
+      HealthCheckType: ELB
+      LaunchTemplate:
+        LaunchTemplateId: !Ref MyLT 
+        Version: "1"
+      MaxSize: "3"
+      MinSize: "1" 
+      TargetGroupARNs:
+        - !Ref MyTG
 
-Listener:
-  Type: AWS::ElasticLoadBalancingV2::Listener
-  Properties:
-    DefaultActions: # Required
-      - Type: forward
-        TargetGroupArn: !Ref TargetGroup 
-    LoadBalancerArn: !Ref ElasticLoadBalancing # Required
-    Port: 80
-    Protocol: HTTP
+  MyCPUPolicy:
+    Type: AWS::AutoScaling::ScalingPolicy
+    Properties:
+      AutoScalingGroupName: !Ref MyASG  # Required
+      PolicyType: TargetTrackingScaling
+      TargetTrackingConfiguration:
+        PredefinedMetricSpecification:
+          PredefinedMetricType: ASGAverageCPUUtilization
+        TargetValue: 60.0
+
+  MyListener:
+    Type: AWS::ElasticLoadBalancingV2::Listener
+    Properties:
+      DefaultActions: # Required
+        - Type: forward
+          TargetGroupArn: !Ref MyTG 
+      LoadBalancerArn: !Ref MyALB # Required
+      Port: 80
+      Protocol: HTTP
+
+  MyDBSG:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Allow connections only from WebServer # Required
+      SecurityGroupIngress:
+        - IpProtocol: tcp 
+          FromPort: 3306
+          ToPort: 3306
+          SourceSecurityGroupId: !GetAtt MySG.GroupId
+
+  MyALBSG:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: "Enables SSH and HTTP" # Required
+      SecurityGroupIngress:
+        -   CidrIp: 0.0.0.0/0
+            FromPort: 22
+            ToPort: 22
+            IpProtocol: tcp
+
+        -   CidrIp: 0.0.0.0/0
+            FromPort: 80
+            ToPort: 80
+            IpProtocol: tcp
+      VpcId: !Ref MyVPC
+      
+  MySG:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: "Enables SSH and HTTP to ALB" # Required
+      SecurityGroupIngress:
+        -   CidrIp: 0.0.0.0/0
+            FromPort: 22
+            ToPort: 22
+            IpProtocol: tcp
+
+        -   SourceSecurityGroupId: !GetAtt MyALBSG.GroupId
+            FromPort: 80
+            ToPort: 80
+            IpProtocol: tcp
+      VpcId: !Ref MyVPC
 
 Outputs:
-  WebsiteURL:
-    Value: !Sub
-      - http://${PublicAddress}
-      - PublicAddress: !GetAtt WebServerHost.PublicDnsName
-    Description: PhoneBook Application URL
+  AppUrl:
+    Description: Url of the ALB
+    Value: !Join
+      - ""
+      - - "http://"
+        - !GetAtt MyALB.DNSName 
+
+  RDSEndPoint:
+    Description: 'The RDS Endpoint of MySQL DB'
+    Value: !GetAtt MyDB.Endpoint.Address
