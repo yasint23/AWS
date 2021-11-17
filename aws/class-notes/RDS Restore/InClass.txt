@@ -1,0 +1,42 @@
+
+
+** The Amazon RDS Maintenance Window **
+
+Every DB instance has a weekly maintenance window during which any system changes are applied. You can think of the maintenance window as an opportunity to control when modifications and software patching occur, in the event either are requested or required. If a maintenance event is scheduled for a given week, it is initiated during the 30-minute maintenance window you identify. Most maintenance events also complete during the 30-minute maintenance window, although larger maintenance events may take more than 30 minutes to complete.
+
+The 30-minute maintenance window is selected at random from an 8-hour block of time per region. If you don't specify a preferred maintenance window when you create the DB instance, then Amazon RDS assigns a 30-minute maintenance window on a randomly selected day of the week.
+
+RDS will consume some of the resources on your DB instance while maintenance is being applied. You might observe a minimal effect on performance. For a DB instance, on rare occasions, a Multi-AZ failover might be required for a maintenance update to complete.
+
+** Quotas and Constraints on RDS **
+
+By default, you can have up to a total of 40 DB instances. RDS DB instances, Aurora DB instances, Amazon Neptune instances, and Amazon DocumentDB instances apply to this quota.
+
+The following limitations apply to the Amazon RDS DB instances:
+
+10 for each SQL Server edition (Enterprise, Standard, Web, and Express) under the "license-included" model
+
+10 for Oracle under the "license-included" model
+
+40 for MySQL, MariaDB, or PostgreSQL
+
+40 for Oracle under the "bring-your-own-license" (BYOL) licensing model
+
+https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/CHAP_Limits.html
+
+
+- Please take a look at the links below;
+
+** Automated Backups **
+
+https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_WorkingWithAutomatedBackups.html
+
+
+** How to backup and restore MySQL databases using the mysqldump command **
+
+https://www.sqlshack.com/how-to-backup-and-restore-mysql-databases-using-the-mysqldump-command/
+
+
+** Manual Snapshot Script Example **
+
+https://gist.github.com/jfriv/086799433b472b8d3d9e7e0921554eaf

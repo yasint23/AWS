@@ -1,0 +1,5 @@
+
+https://docs.aws.amazon.com/vpc/latest/userguide/VPC_Subnets.html
+
+https://docs.aws.amazon.com/vpc/latest/userguide/amazon-vpc-limits.html
+

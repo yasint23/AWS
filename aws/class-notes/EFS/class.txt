@@ -1,0 +1,61 @@
+
+- Amazon Elastic File System (Amazon EFS) provides a simple, serverless, set-and-forget elastic file system for use with AWS Cloud services and on-premises resources.
+
+- Amazon EC2, Amazon ECS, and AWS Lambda, can access an Amazon EFS file system at the same time, providing a common data source for workloads and applications running on more than one compute instance or server.
+
+-  With Amazon EFS, you can choose from a range of storage classes that are designed for different use cases:
+
+    EFS Standard
+        A regional storage class for frequently accessed data. It offers the highest levels of availability and durability by storing file system data redundantly across multiple Availability Zones in an AWS Region.
+
+    EFS Standard-Infrequent Access (IA)
+        A regional storage class for infrequently accessed data. It offers the highest levels of availability and durability by storing file system data redundantly across multiple Availability Zones in an AWS Region.
+
+    EFS One Zone
+        For frequently accessed files stored redundantly within a single Availability Zone in an AWS Region.
+
+    EFS One Zone-IA
+        A lower-cost storage class for infrequently accessed files stored redundantly within a single Availability Zone in an AWS Region.
+
+- With Amazon EFS, you can choose from two performance modes and two throughput modes:
+
+    Amazon EFS offers two performance modes, General Purpose mode and Max I/O mode. You choose a file system's performance mode when you create it, and it cannot be changed.
+
+    The default General Purpose performance mode is ideal for latency-sensitive use cases, like web serving environments, content management systems, home directories, and general file serving.
+
+    Highly parallelized applications and workloads, such as big data analysis, media processing, and genomic analysis, can benefit from 
+    Max I/O performance mode.
+
+    Using the default Bursting Throughput mode, throughput scales as your file system grows. Using Provisioned Throughput mode, you can specify the throughput of your file system independent of the amount of data stored.
+
+- For file systems that use One Zone storage classes, only the General Purpose performance mode is available.
+
+- Using Amazon EFS with Microsoft Windows–based Amazon EC2 instances is not supported.
+
+- To access your Amazon EFS file system in a VPC, you create one or more mount targets in the VPC.
+
+    For file systems using Standard storage classes, you can create a mount target in each availability Zone in the AWS Region.
+
+    For file systems using One Zone storage classes, you create only a single mount target that is in the same Availability Zone as the file system.
+
+- If there are multiple subnets in an Availability Zone in your VPC, you create a mount target in one of the subnets. Then all EC2 instances in that Availability Zone share that mount target.
+
+- Amazon EFS does not support mounting from Amazon EC2 Windows instances.
+
+- File metadata, including file names, ownership information, and file system directory structure, is always stored in Standard storage to ensure consistent metadata performance.
+
+- Files smaller than 128 KB aren't eligible for lifecycle management and are always stored in the EFS Standard or One Zone storage class.
+
+- After lifecycle management moves a file into one of the IA storage classes, the file remains there indefinitely.
+
+- You can move files from one of the IA storage classes to the Standard or One Zone storage class by copying them to another location on your file system. If you want your files to remain in the Standard or One Zone storage class, disable lifecycle management and then copy your files.
+
+
+- https://docs.aws.amazon.com/efs/latest/ug/wt2-apache-web-server.html
+
+- https://docs.aws.amazon.com/efs/latest/ug/walkthroughs.html
+
+- Maximum size of a single file: 47.9 TiB
+
+
+

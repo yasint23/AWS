@@ -1,0 +1,38 @@
+
+Examples of Lifecycle Configuration
+ 
+https://docs.aws.amazon.com/AmazonS3/latest/userguide/lifecycle-configuration-examples.html#lifecycle-config-conceptual-ex7
+
+
+* Triggers for replication are:
+
+  - Uploading objects to the source bucket.
+  - DELETE of objects in the source bucket.
+  - Changes to the object, its metadata, or ACL.
+
+* What is replicated:
+
+  - New objects created after enabling replication.
+  - Changes to objects.
+  - Objects created using SSE-S3 using the AWS managed key.
+  - Object ACL updates.
+
+* What isn’t replicated:
+
+  - Objects that existed before enabling replication (can use the copy API).
+  - Objects created with SSE-C and SSE-KMS.
+  - Objects to which the bucket owner does not have permissions.
+  - Updates to bucket-level subresources.
+  - Actions from lifecycle rules are not replicated.
+  - Objects in the source bucket that are replicated from another region are not replicated.
+
+* Deletion behaviour:
+
+  - If a DELETE request is made without specifying an object version ID a delete marker will be added and replicated.
+  - If a DELETE request is made specifying an object version ID the object is deleted but the delete marker is not replicated.
+
+* Charges:
+
+  - Requests for upload.
+  - Inter-region transfer.
+  - S3 storage in both regions.
