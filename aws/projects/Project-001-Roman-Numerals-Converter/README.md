@@ -93,13 +93,13 @@ Ten         Warning with "Not Valid! Please enter a number between 1 and 3999, i
 
 ```
 001-roman-numerals-converter (folder)
-|----cli.sh            # CLI commands
-|----readme.md         # Definition of the project          
-|----cfn-template.yml  # Cloudformation template
-|----app.py            # Python Flask Web Application
+|----cli.sh            # To be delivered by students (CLI commands)
+|----readme.md         # Given to the students (Definition of the project)          
+|----cfn-template.yml  # To be delivered by students (Cloudformation template)
+|----app.py            # To be delivered by students (Python Flask Web Application)
 |----templates
-        |----index.html  # HTML template
-        |----result.html # HTML template
+        |----index.html  # Given to the students (HTML template)
+        |----result.html # Given to the students (HTML template)
 ```
 
 ## Expected Outcome
@@ -130,7 +130,7 @@ Ten         Warning with "Not Valid! Please enter a number between 1 and 3999, i
 
 - Git & Github for Version Control System
 
-### At the end of the project, you will be able to;
+### At the end of the project, students will be able to;
 
 - improve coding skills using iterables(dict), operators, for-loop, if statements and functions within Python
 
@@ -150,19 +150,21 @@ Ten         Warning with "Not Valid! Please enter a number between 1 and 3999, i
 
 ## Steps to Solution
   
-- Step 1: Create project folder for local public repo on your pc
+- Step 1: Download or clone project definition from `clarusway-aws-workshop` repo on Github 
 
-- Step 2: Write the Roman Numerals Converter Application in Python
+- Step 2: Create project folder for local public repo on your pc
 
-- Step 3: Transform your application into web application using Python Flask framework
+- Step 3: Write the Roman Numerals Converter Application in Python
 
-- Step 4: Prepare a cloudformation template to deploy your app on EC2 Instance
+- Step 4: Transform your application into web application using Python Flask framework
 
-- Step 5: Push your application into your own public repo on Github
+- Step 5: Prepare a cloudformation template to deploy your app on EC2 Instance
 
-- Step 6: Deploy your application on AWS Cloud using Cloudformation template to showcase your app within your team.
+- Step 6: Push your application into your own public repo on Github
 
-- Step 7: Deploy your application on AWS Cloud using AWS Cli to showcase your app within your team.
+- Step 7: Deploy your application on AWS Cloud using Cloudformation template to showcase your app within your team.
+
+- Step 8: Deploy your application on AWS Cloud using AWS Cli to showcase your app within your team.
 
 ## Notes
 
