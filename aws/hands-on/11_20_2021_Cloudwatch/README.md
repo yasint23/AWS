@@ -168,7 +168,9 @@ stress --cpu 80 --timeout 20000
 #### Step 1: Create Role
 
 - Go to IAM console a create Policy named "start-stop-instance" including these json script seen below:
-
+NOTE:
+-The first part of policy below for to get ec2 logs and second part is for the start-stop instance policy.
+-Actually for the ec2 start-stop IAM role doesn't need but for to get the ec2-logs we need IAM role and policy
 ```text 
 {
     "Version": "2012-10-17",
@@ -183,7 +185,7 @@ stress --cpu 80 --timeout 20000
             "Resource": "arn:aws:logs:*:*:*"
         },
         {
-            "Effect": "Allow",
+            "Effect": "Allow",      
             "Action": [
                 "ec2:Start*",
                 "ec2:Stop*"
@@ -207,8 +209,8 @@ stress --cpu 80 --timeout 20000
 - Add tags ---> Next
 
 - Review
-	- Role Name :start-stop-instance
-  - Role Description: start-stop-instance
+	- Role Name :start-stop-log-instance
+  - Role Description: start-stop-log-instance
 
 - click create role
 
