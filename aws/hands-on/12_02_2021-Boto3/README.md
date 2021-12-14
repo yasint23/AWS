@@ -40,8 +40,8 @@ Default output format [yaml]:
 ### STEP-1: List your S3 Buckets:
 
 
-- To be able to use Boto3, first you need to import it (import boto3), then you can type other commands regarding it. Create a file  called s3list.py and put the code below in it.
-
+- To be able to use Boto3, first you need to import it (import boto3), then you can type other commands regarding it. 
+- Create a file a called s3list.py and put the code below in it.
 
 ```text
 import boto3
@@ -53,6 +53,8 @@ s3 = boto3.resource('s3')
 for bucket in s3.buckets.all():
     print(bucket.name)
 ```
+Type on the terminal; 
+"python s3list.py" to see the s3 buckets
 
 ### STEP-2: Create an S3 bucket and list buckets again
 
