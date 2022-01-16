@@ -1,0 +1,89 @@
+VPC-1
+- create a vpc named 'yasin-vpc-a' with 10.7.0.0/16 CIDR
+
+- enable DNS hostnames for the vpc 'yasin-vpc-a'
+select 'yasin-vpc-a' on VPC console ----> Actions ----> Edit DNS hostnames
+
+- Create Internet Gateway
+Name Tag "yasin-igw"
+
+-  attach the internet gateway 'yasin-igw' to the vpc 'yasin-vpc-a'
+  - Actions ---> attach to VPC
+
+- Go to the Route Tables from left hand menu  rename as 'yasin-default-rt'
+- add a route
+    - destination ------> 0.0.0.0/0 (any network, any host)
+    - As target;
+      - Select Internet Gateway
+      - Select 'yasin-igw'
+      - save routes
+
+- Go to the Subnets from left hand menu
+1. 
+Name tag          :yasin-az1a-public-subnet
+VPC               :yasin-vpc-a
+Availability Zone :us-east-1a
+IPv4 CIDR block   :10.7.1.0/24
+
+2. 
+Name tag          :yasin-az1a-private-subnet
+VPC               :yasin-vpc-a
+Availability Zone :us-east-1a
+IPv4 CIDR block   :10.7.2.0/24
+
+3. 
+Name tag          :yasin-az1b-public-subnet
+VPC               :yasin-vpc-a
+Availability Zone :us-east-1b
+IPv4 CIDR block   :10.7.4.0/24
+
+4. 
+Name tag          :yasin-az1b-private-subnet
+VPC               :yasin-vpc-a
+Availability Zone :us-east-1b
+IPv4 CIDR block   :10.7.5.0/24
+
+- Select 'yasin-default-rt' 
+
+- create a private route table (not allowing access to the internet) 
+  - name: 'yasin-private-rt'
+  - VPC : 'yasin-vpc-a'
+  - click create button
+click Subnet association button and show the route table yasin-private-rt
+
+- Click Edit subnet association
+- select private subnets;
+  - yasin-az1a-private-subnet
+  - yasin-az1b-private-subnet
+  - yasin-az1c-private-subnet
+
+- create a public route table (allowing access to the internet) 
+- push the create route table button
+  - name: 'yasin-public-rt'
+  - VPC : 'yasin-vpc-a'
+- Click Edit subnet association
+
+- select public subnets;
+  - yasin-az1a-public-subnet
+  - yasin-az1b-public-subnet
+  - yasin-az1c-public-subnet
+
+- select Routes on the sub-section of yasin-public-rt
+- click edit routes
+- click add route
+- add a route
+    - destination ------> 0.0.0.0/0 (any network, any host)
+    - As target;
+      - Select Internet Gateway
+      - Select 'yasin-igw'
+
+- enable Auto-Assign Public IPv4 Address for public subnets
+ Go to the Subnets from left hand menu
+
+  - Select 'yasin-az1a-public-subnet' subnet ---> Action ---> Modify auto-assign IP settings  ---> select 'Enable auto-assign public IPv4 address' ---> Save
+
+  - Select 'yasin-az1b-public-subnet' subnet ---> Action ---> Modify auto-assign
+  IP settings  ---> select 'Enable auto-assign public IPv4 address' ---> Save
+
+  - Select 'yasin-az1c-public-subnet' subnet ---> Action ---> Modify auto-assign
+  IP settings  ---> select 'Enable auto-assign public IPv4 address' ---> Save
