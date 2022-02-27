@@ -1,6 +1,0 @@
-•	sudo yum update -y           #Update packet manager (EC2)
-•	sudo yum install python3     #Install Python
-•	python3 --version            #To check python 
-•	sudo pip3 install flask      #Install Flask
-•	pip3 list                    #To check Flask and python
-•	sudo python3 name.py         #To run python in ec2 for name.py file (while in root)
