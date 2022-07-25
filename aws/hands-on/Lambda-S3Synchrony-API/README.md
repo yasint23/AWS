@@ -14,28 +14,16 @@ At the end of the this hands-on training, students will be able to;
 
 - Create a lambda function, that generates a random city and trigger it with API Gateway.
 
-
-
-## Outline
-
-- Part 1 - Prep - Creating AWS S3 Bucket
-
-- Part 2 - Creating a Lambda Function and Setting a Trigger Event
-
-- Part 3 - Create a Lambda Function with API Gateway
-
-
-
 ## Part 1 - Prep - Creating a S3 Bucket
 
 STEP 1 : Prep - Creating S3 Bucket
 
 - Go to S3 menu using AWS console
 
-- Create a bucket of `clarusway.source.lambda` with following properties,
+- Create a bucket of `my.source.lambda` with following properties,
 
 ```text
-Bucket name                 : clarusway.source.lambda
+Bucket name                 : my.source.lambda
 Region                      : N.Virginia
 Block all public access     : Checked (KEEP BlOCKED)
 Versioning                  : Disabled
@@ -45,10 +33,10 @@ Object-level logging        : Disabled
 ```
 PS: Please, do not forget to select "US East (N.Virginia)" as Region
 
-- Create another bucket of `clarusway.destination.lambda` with following properties,
+- Create another bucket of `my.destination.lambda` with following properties,
 
 ```text
-Bucket name                 : clarusway.destination.lambda
+Bucket name                 : my.destination.lambda
 Region                      : N.Virginia
 Block all public access     : Checked (KEEP BlOCKED)
 Versioning                  : Disabled
@@ -87,14 +75,13 @@ STEP 2: Create Lambda Function
   Role: Lambda.S3.Replica
   
 ```
-
 STEP 3: Setting Trigger Event
 
 - Go to Configuration sub-menu and click AddTrigger on Designer  
 ```
 Trigger Configuration : S3
 
-- Bucket              : clarusway.source.lambda
+- Bucket              : my.source.lambda
 
 - Event Type          : All object create events
 
@@ -114,7 +101,7 @@ s3_client = boto3.client("s3")
 
 
 def lambda_handler(event, context):
-   destination_bucket_name = 'clarusway.destination.lambda'
+   destination_bucket_name = 'my.destination.lambda'
 
    # event contains all information about uploaded object
    print("Event :", event)
@@ -144,11 +131,11 @@ STEP 5: Testing S3 Bucket Synchronization
 
 - Go to S3 Bucket Service
 
-- Select S3 bucket named 'clarusway.source.lambda'
+- Select S3 bucket named 'my.source.lambda'
 
 - Upload any files to source bucket
 
-- Go to the S3 bucket named 'clarusway.destination.lambda' and show the uploaded files to the source bucket.
+- Go to the S3 bucket named 'my.destination.lambda' and show the uploaded files to the source bucket.
 
 - You can show some other functions if have enough time (Optional)
 
@@ -236,9 +223,6 @@ def lambda_handler(event, context):
 ```
 - Click "DEPLOY" button
 
-
-
-
 STEP 2: Testing your function - Create test event
 
 Click 'Test' button and opening page Configure test events
@@ -259,8 +243,6 @@ You will see the message Execution result: succeeded(logs) and a random city in 
 STEP 3 : Create New 'API'
 
 - Go to API Gateway on AWS Console
-
-- Click "Create API"
 
 - Select REST API ----> Build
 ```
