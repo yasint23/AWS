@@ -1,7 +1,5 @@
 ## Part 1 - Launch an Application
 
-- First download the php-v1.zip and php-v2.zip files from GitHub and share them via Slack.
-
 - Go to `Elastic Beanstalk` service on AWS console.
 
 - Click `Create Application`.
@@ -21,9 +19,6 @@
 
 - After the creation of the environment click the link (Application URL) and show the Web Page.
 
-- From the left-hand menu show the app and env menus, talk about them. Click on the tabs like `Configuration`, `Monitoring` etc. and explain them.
-
-- Go to `EC2` service on AWS console and show the resources 
 - From the left-hand menu show the app and env menus, talk about them. Click on the tabs like `Configuration`, `Monitoring` etc. and explain them.
 
 - Go to `EC2` service on AWS console and show the resources 
@@ -81,7 +76,7 @@ https://blog.shikisoft.com/which_elastic_beanstalk_deployment_should_you_use/
 
 - After the update completed click the link (Application URL) and show the Updated Web Page.
 
-- Show that one more instnace is created and . the former instance will be terminated because of the `Immutable` deployment model.
+- Show that one more instance is created and . the former instance will be terminated because of the `Immutable` deployment model.
 
 - Click `Mysampleapp` >> `Application versions` and show we have one app but 3 versions.
 
