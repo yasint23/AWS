@@ -2,16 +2,6 @@
 
 Purpose of the this hands-on training is to configure RDS Instance via AWS Management Console and connect from MySQL Workbench.
 
-## Learning Outcomes
-
-At the end of the this hands-on training, students will be able to;
-
-- learn how to set configuration of RDS Instance on console.
-
-- learn how to connect to RDS via workbench.
-
-- learn how to manipulate RDS Instance.
-
 ## Outline
 
 - Part 1 - Creating RDS Instance on AWS Management Console
@@ -29,19 +19,16 @@ At the end of the this hands-on training, students will be able to;
 ```text
 Standard Create
 ```
-
 - Engine option
 
 ```text
 MySQL
 ```
-
 - Version
 
 ```text
 8.0.20
 ```
-
 - Template
 
 ```text
@@ -53,7 +40,7 @@ Free tier
 ```text
 DB instance identifier: RDS-mysql
 Master username: admin
-Master password: Pl123456789
+Master password: Y12345678
 ```
 
 - DB instance size
@@ -101,7 +88,7 @@ DB Authentication: Password authentication
 - Additional configuration
 
 ```text
-Initial DB name                   : clarusway
+Initial DB name                   : mydb
 DB parameter group & option group : default
 Automatic backups                 : enable
 Backup retention period           : 7 days (Explain how)
@@ -149,7 +136,7 @@ On the page opened, we'll set up a new connection:
                        So we enter "admin" as a username.
 
 4. Password          : Click the `Store in Keychain` and enter the password 
-                       that you determined as "Clarusway_1" while creating the DB Instance.
+                       that you determined as "my_1" while creating the DB Instance.
 
 5. Test Connection   : Before you connect DB Instance, test the connection whether it works properly.
                        So, click `Test Connection` tab.
@@ -161,11 +148,11 @@ On the page opened, we'll set up a new connection:
 
 ## Part 3 - Manipulating RDS Instance
 
-- Show `clarusway` database that is created together with RDS DB instance creation.
+- Show `mydb` database that is created together with RDS DB instance creation.
 
 - Create a new database from "Schema" tab
 
-- To modify the database, first, we need to create a new table. So, click the `clarusway` schema (or your schema's name). Right-click the `Table` option, then select the `Create Table`, and enter `Personal_Info` as table name.
+- To modify the database, first, we need to create a new table. So, click the `mydb` schema (or your schema's name). Right-click the `Table` option, then select the `Create Table`, and enter `Personal_Info` as table name.
 
 ```text
 1. First Row: Type `ID_number` into the first line. 
@@ -187,7 +174,7 @@ Then a window that shows the review of the table pops up on the screen. Click Ap
 - Add another table via SQL command:
 
 ```sql
-CREATE TABLE `clarusway`.`Personal_Info_2` (
+CREATE TABLE `mydb`.`Personal_Info_2` (
   `ID_number` INT NOT NULL,
   `Name` VARCHAR(45) NULL,
   `Surname` VARCHAR(45) NULL,
@@ -202,22 +189,22 @@ CREATE TABLE `clarusway`.`Personal_Info_2` (
 - Add data to the "Personal_Info" table as shown below:
 
 ```sql
-INSERT INTO clarusway.Personal_Info
+INSERT INTO mydb.Personal_Info
 (ID_number, Name, Surname, Gender, Salary)
 VALUES
-('1234','Osvaldo','Clarusway','Male','30000'), ('56789','Guile','Clarusway','Male', '60000'), ('007','Victor','Clarusway','Male','60000'), ('1384','Nina','Clarusway','Female','70000');
+('1234','Osvaldo','my','Male','30000'), ('56789','Guile','my','Male', '60000'), ('007','Victor','my','Male','60000'), ('1384','Nina','my','Female','70000');
 ```
 
 - Write a query to show all data in the `Personal_Info` table
 
 ```sql
-SELECT * FROM clarusway.Personal_Info;
+SELECT * FROM mydb.Personal_Info;
 ```
 
 - Write a query to show the personal whose salary are higher than 40K in the `Personal_Info` table
 
 ```sql
- SELECT * FROM clarusway.Personal_Info WHERE salary > 40000
+ SELECT * FROM mydb.Personal_Info WHERE salary > 40000
 ```
 
 - Delete the table 
